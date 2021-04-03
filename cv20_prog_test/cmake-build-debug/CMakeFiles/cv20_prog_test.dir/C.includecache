@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/levinz/share/bwedu/20 WS/CV/Programming/cv20_prog_test/libraries.h
+math.h
+-
+
+/home/levinz/share/bwedu/20 WS/CV/Programming/cv20_prog_test/simple_filter.c
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+libraries.h
+/home/levinz/share/bwedu/20 WS/CV/Programming/cv20_prog_test/libraries.h
+
