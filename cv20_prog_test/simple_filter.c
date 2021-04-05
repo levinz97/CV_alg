@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include "libraries.h"
 
@@ -23,6 +24,7 @@ int     ny,
 float   offset
 )
 {
+ double start = clock();
   for (int i=1;i<=nx;i++)
     for (int j=1;j<=ny;j++)
 	  {
@@ -30,6 +32,8 @@ float   offset
 	    u[i][j] += offset;
 		/* increase all pixel values by "offset" */ 
 	  }
+  double finish = clock();
+    printf("consumed time is %f",(finish-start)/CLOCKS_PER_SEC);
 }
 
 /*--------------------------------------------------------------------------*/
