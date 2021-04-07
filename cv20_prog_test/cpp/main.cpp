@@ -7,15 +7,15 @@ using namespace std;
 
 int main() {
     uchar offset = 150;
-    float scaling = 2;
-    string filename = "baboon.ppm";
-//    cout << "please input the image name" << endl;
+    double scaling = 2;
+    string filename;
+    cout << "please input the image name" << endl;
 
-//    cin >> filename;
-//    cv::Mat image = cv::imread("head.pgm", cv::IMREAD_GRAYSCALE);
+    cin >> filename;
+    cv::Mat image = cv::imread("head.pgm", cv::IMREAD_GRAYSCALE);
 
     bool colorImage;
-    cv::Mat image;
+
 
     if(filename.substr(filename.find('.') + 1) == "pgm"){
         // read image with only grey scale
@@ -32,7 +32,7 @@ int main() {
 //    cout << colorImage<<endl;
     if(image.data == nullptr){
         cerr<<"file doesn't exist"<<endl;
-        return 0;
+        return -1;
     }
 
     cout<<"breadth of image is "<< image.cols<<",image height is "<< image.rows <<" number of channel is "
@@ -72,59 +72,62 @@ int main() {
     if(!colorImage) cv::imwrite("offset.pgm", image_out);
     else cv::imwrite("offset.ppm", image_out);
 
-////     visit every pixel with the pointer
+
+//    test.convertTo(test,CV_32F);
+
+    cv::Mat test = image.clone();
+
+//    cv::Mat new_image = cv::Mat::zeros(test.rows,test.cols,test.type());
+//    for (size_t y = 0; y < test.rows; y++){
+//        for (size_t x = 0; x < test.cols * test.channels(); x++){
+////            for(size_t c = 0; c < test.channels(); c++){
 //
-//    cv::Mat image_out1 = image.clone();
-//    for (size_t y = 0; y < image_out1.rows; y++){
-//        auto *row_ptr = image.ptr<uchar>(y);
-//        for(size_t x = 0; x < image_out1.cols; x++) {
-//            uchar *data_ptr = &row_ptr[x * image_out1.channels()];
-//            for(int c = 0; c != image_out1.channels(); c++,data_ptr++){
-//                for(int z = 0; z < 10&& x<1 && y <1; z++)
-//                    cout << "before:  "<<(int)*data_ptr << endl;
-////                cout << "after:   "<< (int)*data_ptr << endl;
-//            }
+////                new_image.at<cv::Vec3b>(y,x)[c] =
+////                        cv::saturate_cast<uchar>( scaling * test.at<cv::Vec3b>(y,x)[c]);
+//
+//            auto intensity =  (int)test.at<uchar>(y, x);
+////            cout << "\n now " << (int)intensity << endl;
+//            intensity -= 127.5 ;
+////            cout << " first "<< (int)intensity;
+//            intensity *= scaling;
+////            cout << " second " << (int)intensity;
+//            intensity += 127.5 ;
+//            if (intensity < 0) intensity = 0;
+//            else if (intensity > 255) intensity = 255;
+//            test.at<uchar>(y,x)= (uchar)intensity;
+////            }
 //        }
 //    }
-//    for (size_t y = 0; y < image_out1.rows; y++){
-//        auto *row_ptr = image.ptr<uchar>(y);
-//        for(size_t x = 0; x < image_out1.cols; x++) {
-//            uchar *data_ptr = &row_ptr[x * image_out1.channels()];
-//            for(int c = 0; c != image_out1.channels(); c++,data_ptr++){
-////                cout << "before:  "<<(int)*data_ptr << endl;
-//                *data_ptr -= 127.5;
-//                *data_ptr *= scaling;
-//                *data_ptr += 127.5;
-//                if(*data_ptr < 0) *data_ptr = 0;
-//                if(*data_ptr > 255) *data_ptr = 255;
-////                cout << "after:   "<< (int)*data_ptr << endl;
-//            }
-//        }
-//    }
-//    ///////////////////////////////////
-//    for (size_t y = 0; y < image_out1.rows; y++){
-//        auto *row_ptr = image.ptr<uchar>(y);
-//        for(size_t x = 0; x < image_out1.cols; x++) {
-//            uchar *data_ptr = &row_ptr[x * image_out1.channels()];
-//            for(int c = 0; c != image_out1.channels(); c++,data_ptr++){
-//                for(int z = 0; z < 10 && x<1 && y <1; z++)
-//                    cout << "now:  "<<(int)*data_ptr << endl;
-////                cout << "after:   "<< (int)*data_ptr << endl;
-//            }
-//        }
-//    }
-//
-//    cv::imshow("scaling", image_out1);
-//    if(!colorImage) cv::imwrite("scaling.pgm", image_out1);
-//    else cv::imwrite("scaling.ppm", image_out1);
-//    cv::waitKey();
-//    cv::destroyAllWindows();
-//
-//    // automatically called at the end of a scope
-//    // not needed unless the matrix size varies in different iterations within same loop
-//    image.release();
-//    image_out.release();
-//    image_out1.release();
+
+//    visit every pixel with the pointer
+
+    for (size_t y = 0; y < test.rows; y++){
+        auto *row_ptr = test.ptr<uchar>(y);
+        for(size_t x = 0; x < test.cols * test.channels(); x++) {
+            auto *data_ptr = &row_ptr[x];
+            auto intensity = (double)*data_ptr;
+            intensity -= 127.5;
+            intensity *= scaling;
+            intensity += 127.5;
+            if(intensity > 255) intensity = 255;
+            if(intensity < 0) intensity = 0;
+            *data_ptr = (uchar)intensity;
+
+        }
+    }
+
+
+    cv::imshow("scaling", test);
+    if(!colorImage) cv::imwrite("scaling.pgm", test);
+    else cv::imwrite("scaling.ppm", test);
+    cv::waitKey();
+    cv::destroyAllWindows();
+
+    // automatically called at the end of a scope
+    // not needed unless the matrix size varies in different iterations within same loop
+    image.release();
+    image_out.release();
+    test.release();
     return 0;
 
 }
