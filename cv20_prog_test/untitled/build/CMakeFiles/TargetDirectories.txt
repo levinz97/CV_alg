@@ -1,3 +1,0 @@
-/home/levinz/share/bwedu/20 WS/CV/Programming/cv20_prog_test/untitled/build/CMakeFiles/edit_cache.dir
-/home/levinz/share/bwedu/20 WS/CV/Programming/cv20_prog_test/untitled/build/CMakeFiles/rebuild_cache.dir
-/home/levinz/share/bwedu/20 WS/CV/Programming/cv20_prog_test/untitled/build/CMakeFiles/untitled.dir
