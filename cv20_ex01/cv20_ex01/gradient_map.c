@@ -315,6 +315,10 @@ for (i=1; i<=nx; i++)
      {
      /*!           TODO               !*/
      /*! SUPPLEMENT MISSING CODE HERE !*/
+     fx = (-u[i-1][j] + u[i+1][j])/(2 * hx);
+     fy = (-u[i][j-1] + u[i][j+1])/(2 * hy);
+
+     u_mag[i][j] = sqrt(pow(fx,2) + pow(fy,2));
 
      /*!     END OF MISSING CODE      !*/
      }
@@ -400,14 +404,24 @@ printf("****************************************************************\n\n");
 /* ---- read input image (pgm format P5) ---- */
 
 /* read image name */
-printf("input image:                                            ");
-gets (in);
-
+printf("input image:                                            \n");
+//fgets (in,80,stdin);
+strcpy(in, "coins.pgm");
 /* open pgm file and read header */
 inimage = fopen(in,"rb");
+
+    if (inimage==NULL)
+    {
+        printf("Reading %s FAILED",in);
+        printf("\n\n PROGRAM ABORTED !!! \n\n");
+        exit(0);
+    }
+
 fgets (row, 80, inimage);
 fgets (row, 80, inimage);
 while (row[0]=='#') fgets(row, 80, inimage);
+
+
 sscanf (row, "%ld %ld", &nx, &ny);
 fgets (row, 80, inimage);
 
@@ -426,11 +440,11 @@ fclose(inimage);
 /* ---- read other parameters ---- */
 
 printf("presmoothing parameter sigma:                          ");
-gets(row);  sscanf(row, "%f", &sigma);
+fgets(row,80,stdin);  sscanf(row, "%f", &sigma);
 printf("gradient threshold t_edge:                             ");
-gets(row);  sscanf(row, "%f", &t_edge);
+fgets(row,80,stdin);  sscanf(row, "%f", &t_edge);
 printf("output image (edge image):                             ");
-gets(out1);
+fgets(out1,80,stdin);
 printf("\n");
 
 
