@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/cv20_prog_test.dir/simple_filter.c.o  -o cv20_prog_test 
